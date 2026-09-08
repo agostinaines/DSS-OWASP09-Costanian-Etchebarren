@@ -9,6 +9,12 @@ users = {
     'demo': 'demo'
 }
 
+error_counter = 0
+
+def update_error_counter():
+    global error_counter
+    error_counter += 1
+
 @app.route('/')
 def index():
     if 'username' in session:
@@ -25,6 +31,8 @@ def login():
             session['username'] = username
             return redirect(url_for('home'))
         else:
+            update_error_counter()
+            print(error_counter)
             return render_template('login.html', error='Invalid credentials')
     
     return render_template('login.html')
