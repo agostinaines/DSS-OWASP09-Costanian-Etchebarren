@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, Response
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 
 app = Flask(__name__)
 app.secret_key = "p=CM37tcvsmx$oSI"
@@ -9,11 +10,15 @@ users = {
     'demo': 'demo'
 }
 
-error_counter = 0
+LOGIN_FAIL_COUNT = Counter(
+    'app_login_failed_total', 
+    'Total de intentos fallidos de inicio de sesión.', 
+    ['method', 'endpoint']
+)
 
-def update_error_counter():
-    global error_counter
-    error_counter += 1
+@app.route('/metrics')
+def metrics():
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 
 @app.route('/')
 def index():
@@ -31,8 +36,10 @@ def login():
             session['username'] = username
             return redirect(url_for('home'))
         else:
-            update_error_counter()
-            print(error_counter)
+            LOGIN_FAIL_COUNT.labels(
+                    method=request.method, 
+                    endpoint=request.path
+                ).inc()
             return render_template('login.html', error='Invalid credentials')
     
     return render_template('login.html')
@@ -49,4 +56,4 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
