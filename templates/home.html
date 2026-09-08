@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <style>
+        body { font-family: Arial; margin: 50px; }
+        .welcome { color: green; }
+        .information { color: red; }
+        a { background: #007bff; color: white; padding: 10px; text-decoration: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1 class="welcome">Bienvenid&#64;, {{ session['username'] }}!</h1>
+    <h2 class="information">INFORMACIÓN SÚPER SECRETA</h2>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
