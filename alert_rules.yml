@@ -1,0 +1,10 @@
+groups:
+  - name: security-alerts
+    rules:
+      - alert: RepeatedFailedLogins
+        expr: app_login_failed_total >= 3
+        labels:
+          severity: warning
+        annotations:
+          summary: Se detectaron varios intentos fallidos de inicio de sesión
+          description: La aplicación registró al menos tres intentos fallidos de inicio de sesión.

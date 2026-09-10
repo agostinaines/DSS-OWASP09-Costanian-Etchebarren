@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Iniciar sesión</title>
     <style>
         body { font-family: Arial; margin: 50px; }
         form { max-width: 300px; }
@@ -11,14 +11,14 @@
 </head>
 
 <body>
-    <h1>Login</h1>
+    <h1>Iniciar sesión</h1>
     {% if error %}
         <p class="error">{{ error }}</p>
     {% endif %}
     <form method="POST">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="submit" value="Login">
+        <input type="text" name="username" placeholder="Usuario" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <input type="submit" value="Ingresar">
     </form>
 </body>
 </html>
