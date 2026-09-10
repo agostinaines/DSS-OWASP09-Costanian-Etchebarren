@@ -1,13 +1,9 @@
+import secrets
+
 from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
-app.secret_key = "p=CM37tcvsmx$oSI"
-
-users = {
-    'agos': '1234',
-    'emilia': '1234',
-    'demo': 'demo'
-}
+app.secret_key = secrets.token_hex(32)
 
 @app.route('/')
 def index():
@@ -21,7 +17,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         
-        if username in users and users[username] == password:
+        if username and username == password:
             session['username'] = username
             return redirect(url_for('home'))
         else:
@@ -31,8 +27,6 @@ def login():
 
 @app.route('/home')
 def home():
-    if 'username' not in session:
-        return redirect(url_for('login'))
     return render_template('home.html')
 
 @app.route('/logout')
